@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Builder
 public class User extends BaseModel implements UserDetails {
 
+
     @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
@@ -29,6 +31,7 @@ public class User extends BaseModel implements UserDetails {
     @Column(name = "verification_token", nullable = true)
     private String verificationToken;
 
+    @NotNull(message = "First name is required")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -36,9 +39,11 @@ public class User extends BaseModel implements UserDetails {
     private String lastName;
 
     @isValidEmail
+    @NotNull(message = "Email is required")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NotNull(message = "Phone number is required")
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
