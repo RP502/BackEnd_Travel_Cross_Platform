@@ -4,7 +4,6 @@ import com.java.travel_cross_platform_be.DTOs.Request.LoginReq;
 import com.java.travel_cross_platform_be.DTOs.Request.RegisterReq;
 import com.java.travel_cross_platform_be.DTOs.Response.LoginRes;
 import com.java.travel_cross_platform_be.DTOs.Response.RegisterRes;
-import com.java.travel_cross_platform_be.Repository.Interface.UserRepo;
 import com.java.travel_cross_platform_be.Service.Interface.AuthenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

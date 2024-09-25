@@ -6,6 +6,9 @@ import com.java.travel_cross_platform_be.DTOs.Response.ResponseEntity;
 import com.java.travel_cross_platform_be.DTOs.Response.LoginRes;
 import com.java.travel_cross_platform_be.DTOs.Response.RegisterRes;
 import com.java.travel_cross_platform_be.Service.Interface.AuthenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,11 @@ public class AuthenController {
 
     private final AuthenService authenService;
 
+    @Operation(summary = "Get a greeting message")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved message"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginReq request) {
         LoginRes response = authenService.login(request);

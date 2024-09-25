@@ -1,25 +1,28 @@
-package com.java.travel_cross_platform_be.Model;
+package com.java.travel_cross_platform_be.Model.Entity;
 
-import com.java.travel_cross_platform_be.Valid.isValidEmail;
+import com.java.travel_cross_platform_be.Model.BaseModel;
+import com.java.travel_cross_platform_be.Model.Role;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "travel_users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User extends BaseModel implements UserDetails {
+public class TravelUser extends BaseModel implements UserDetails {
 
 
     @Column(name = "user_name", nullable = false, unique = true)
@@ -38,7 +41,7 @@ public class User extends BaseModel implements UserDetails {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @isValidEmail
+    @Email(message = "Email is not valid")
     @NotNull(message = "Email is required")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -59,8 +62,8 @@ public class User extends BaseModel implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Column(name= "role", nullable = false)
+    private Role role;
 
     @Column(name = "profile_picture", nullable = true)
     private String profilePicture;
@@ -70,7 +73,7 @@ public class User extends BaseModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of( new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

@@ -1,7 +1,7 @@
 # Travel Cross Platform Backend
 
 ## Overview
-This is a Spring Boot application for managing users in a travel cross-platform system.
+This is a Spring Boot application for managing travelUsers in a travel cross-platform system.
 
 ## Prerequisites
 - Java 11 or higher

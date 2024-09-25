@@ -1,9 +1,9 @@
 package com.java.travel_cross_platform_be.Valid.Validator;
 
 import com.java.travel_cross_platform_be.Valid.isValidEmail;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 public class EmailValidator implements ConstraintValidator<isValidEmail, String> {

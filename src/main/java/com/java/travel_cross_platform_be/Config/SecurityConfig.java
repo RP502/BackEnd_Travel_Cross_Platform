@@ -1,8 +1,9 @@
-package com.java.travel_cross_platform_be.Config.Authen;
+package com.java.travel_cross_platform_be.Config;
 
 
 import com.java.travel_cross_platform_be.Filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,13 +29,19 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    @Value("${server.port}")
+    private int serverPort;
+
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
+        String allowedOrigin = String.format("http://localhost:%d", serverPort);
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigin));
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT" ,"DELETE" , "HEAD" , "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Content-type"));
+        configuration.setAllowedHeaders(List.of("Content-type, Authorization, X-Request-With, X-Auth-Token, X-Csrf-Token, XSRF-TOKEN, X-XSRF-TOKEN, WWW-Authenticate"));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**" , configuration);
         return source;
@@ -46,7 +53,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers( "/api/v1/**").permitAll()
-//                        .requestMatchers("/api/v2/**").permitAll()
+//                        .requestMatchers("/api-docs", "/swagger-ui-custom.html", "").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -2,8 +2,8 @@
 package com.java.travel_cross_platform_be.Service.Implement;
 
 import com.java.travel_cross_platform_be.DTOs.Response.UserDTO;
-import com.java.travel_cross_platform_be.Model.User;
-import com.java.travel_cross_platform_be.Repository.Interface.UserRepo;
+import com.java.travel_cross_platform_be.Model.Entity.TravelUser;
+import com.java.travel_cross_platform_be.Repository.Interface.UserRepository;
 import com.java.travel_cross_platform_be.Service.Interface.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -17,21 +17,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        User savedUser = userRepository.save(user);
+        TravelUser travelUser = new TravelUser();
+        BeanUtils.copyProperties(userDTO, travelUser);
+        TravelUser savedTravelUser = userRepository.save(travelUser);
         UserDTO savedUserDTO = new UserDTO();
-        BeanUtils.copyProperties(savedUser, savedUserDTO);
+        BeanUtils.copyProperties(savedTravelUser, savedUserDTO);
         return savedUserDTO;
     }
 
     @Override
     public Optional<UserDTO> getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<TravelUser> user = userRepository.findById(id);
         if (user.isPresent()) {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(user.get(), userDTO);
@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
-        Optional<User> existingUser = userRepository.findById(id);
+        Optional<TravelUser> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            BeanUtils.copyProperties(userDTO, user);
-            User updatedUser = userRepository.save(user);
+            TravelUser travelUser = existingUser.get();
+            BeanUtils.copyProperties(userDTO, travelUser);
+            TravelUser updatedTravelUser = userRepository.save(travelUser);
             UserDTO updatedUserDTO = new UserDTO();
-            BeanUtils.copyProperties(updatedUser, updatedUserDTO);
+            BeanUtils.copyProperties(updatedTravelUser, updatedUserDTO);
             return updatedUserDTO;
         }
         return null;
@@ -61,10 +61,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(user -> {
+        List<TravelUser> travelUsers = userRepository.findAll();
+        return travelUsers.stream().map(travelUser -> {
             UserDTO userDTO = new UserDTO();
-            BeanUtils.copyProperties(user, userDTO);
+            BeanUtils.copyProperties(travelUser, userDTO);
             return userDTO;
         }).collect(Collectors.toList());
     }

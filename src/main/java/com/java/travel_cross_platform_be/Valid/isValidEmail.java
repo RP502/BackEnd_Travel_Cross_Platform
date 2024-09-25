@@ -1,9 +1,9 @@
 package com.java.travel_cross_platform_be.Valid;
 
 import com.java.travel_cross_platform_be.Valid.Validator.EmailValidator;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

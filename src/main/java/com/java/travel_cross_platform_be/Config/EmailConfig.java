@@ -1,4 +1,4 @@
-package com.java.travel_cross_platform_be.Config.Email;
+package com.java.travel_cross_platform_be.Config;
 
 
 import org.springframework.beans.factory.annotation.Value;

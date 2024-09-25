@@ -1,6 +1,6 @@
-package com.java.travel_cross_platform_be.Config.Authen;
+package com.java.travel_cross_platform_be.Config;
 
-import com.java.travel_cross_platform_be.Repository.Interface.UserRepo;
+import com.java.travel_cross_platform_be.Repository.Interface.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 @Configuration
 public class AuthenticationConfig {
-    private final UserRepo repository;
+    private final UserRepository repository;
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> repository.findUserByUserName(username)
+        return username -> repository.findTravelUserByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username = "+username+" not found"));
     }
     @Bean

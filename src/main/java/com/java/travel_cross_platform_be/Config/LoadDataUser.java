@@ -1,4 +1,4 @@
-package com.java.travel_cross_platform_be.Config.Data;//package com.example.AudioBook.Config.Data;
+package com.java.travel_cross_platform_be.Config;//package com.example.AudioBook.Config.Data;
 //
 //
 //import com.example.AudioBook.Model.AudioUser;
