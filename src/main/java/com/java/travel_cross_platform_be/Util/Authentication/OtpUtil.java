@@ -7,7 +7,7 @@ import java.util.Random;
 @Component
 public class OtpUtil {
 
-    public String generateOtp() {
+    public static String generateOtp() {
         Random random = new Random();
         int randomNumber = random.nextInt(9999);
         String output = Integer.toString(randomNumber);

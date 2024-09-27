@@ -1,14 +1,17 @@
-// src/main/java/com/java/travel_cross_platform_be/Service/Implement/UserServiceImpl.java
 package com.java.travel_cross_platform_be.Service.Implement;
 
-import com.java.travel_cross_platform_be.DTOs.Response.UserDTO;
+
+import com.java.travel_cross_platform_be.DTOs.DTO.UserDTO;
 import com.java.travel_cross_platform_be.Model.Entity.TravelUser;
 import com.java.travel_cross_platform_be.Repository.Interface.UserRepository;
 import com.java.travel_cross_platform_be.Service.Interface.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,11 +24,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        TravelUser travelUser = new TravelUser();
-        BeanUtils.copyProperties(userDTO, travelUser);
-        TravelUser savedTravelUser = userRepository.save(travelUser);
+        TravelUser user = new TravelUser();
+        BeanUtils.copyProperties(userDTO, user);
+        TravelUser savedUser = userRepository.save(user);
         UserDTO savedUserDTO = new UserDTO();
-        BeanUtils.copyProperties(savedTravelUser, savedUserDTO);
+        BeanUtils.copyProperties(user, savedUserDTO);
         return savedUserDTO;
     }
 
@@ -44,11 +47,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         Optional<TravelUser> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
-            TravelUser travelUser = existingUser.get();
-            BeanUtils.copyProperties(userDTO, travelUser);
-            TravelUser updatedTravelUser = userRepository.save(travelUser);
+            TravelUser user = existingUser.get();
+            BeanUtils.copyProperties(userDTO, user);
+            TravelUser updatedUser = userRepository.save(user);
             UserDTO updatedUserDTO = new UserDTO();
-            BeanUtils.copyProperties(updatedTravelUser, updatedUserDTO);
+            BeanUtils.copyProperties(user, updatedUserDTO);
             return updatedUserDTO;
         }
         return null;
@@ -61,10 +64,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<TravelUser> travelUsers = userRepository.findAll();
-        return travelUsers.stream().map(travelUser -> {
+        List<TravelUser> users = userRepository.findAll();
+        return users.stream().map(user -> {
             UserDTO userDTO = new UserDTO();
-            BeanUtils.copyProperties(travelUser, userDTO);
+            BeanUtils.copyProperties(user, userDTO);
             return userDTO;
         }).collect(Collectors.toList());
     }

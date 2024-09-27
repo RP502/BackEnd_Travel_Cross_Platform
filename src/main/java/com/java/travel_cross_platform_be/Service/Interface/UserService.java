@@ -1,6 +1,6 @@
 package com.java.travel_cross_platform_be.Service.Interface;
 
-import com.java.travel_cross_platform_be.DTOs.Response.UserDTO;
+import com.java.travel_cross_platform_be.DTOs.DTO.UserDTO;
 
 import java.util.List;
 import java.util.Optional;

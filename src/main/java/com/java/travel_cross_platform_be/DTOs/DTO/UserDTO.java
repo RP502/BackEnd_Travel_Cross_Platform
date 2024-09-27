@@ -1,4 +1,4 @@
-package com.java.travel_cross_platform_be.DTOs.Response;
+package com.java.travel_cross_platform_be.DTOs.DTO;
 
 import lombok.*;
 
@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class UserDTO {
     private Long id;
     private String userName;

@@ -1,7 +1,6 @@
 package com.java.travel_cross_platform_be.Config;
 
 
-import com.java.travel_cross_platform_be.Filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

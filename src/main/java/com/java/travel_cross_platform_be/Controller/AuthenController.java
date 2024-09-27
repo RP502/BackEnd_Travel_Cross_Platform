@@ -1,127 +1,63 @@
 package com.java.travel_cross_platform_be.Controller;
 
+import com.java.travel_cross_platform_be.DTOs.BaseResponse;
 import com.java.travel_cross_platform_be.DTOs.Request.LoginReq;
 import com.java.travel_cross_platform_be.DTOs.Request.RegisterReq;
-import com.java.travel_cross_platform_be.DTOs.Response.ResponseEntity;
+import com.java.travel_cross_platform_be.DTOs.Request.VerifyReq;
 import com.java.travel_cross_platform_be.DTOs.Response.LoginRes;
 import com.java.travel_cross_platform_be.DTOs.Response.RegisterRes;
 import com.java.travel_cross_platform_be.Service.Interface.AuthenService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.java.travel_cross_platform_be.Service.Jwt.JwtService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Validated
 public class AuthenController {
 
-    private final AuthenService authenService;
-
-    @Operation(summary = "Get a greeting message")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved message"),
-            @ApiResponse(responseCode = "400", description = "Invalid input")
-    })
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginReq request) {
-        LoginRes response = authenService.login(request);
-        ResponseEntity responseEntity = null;
-        if (response == null) {
-            responseEntity = ResponseEntity.builder()
-                    .message("Invalid email or password")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .build();
-        } else {
-            responseEntity = ResponseEntity.builder()
-                    .message("Login successfully")
-                    .status(HttpStatus.OK)
-                    .data(response)
-                    .build();
-        }
-        return responseEntity;
-    }
+    private final AuthenService authenticationService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterReq request) {
-        RegisterRes response = authenService.register(request);
-        ResponseEntity responseEntity = null;
-        if (response == null) {
-            responseEntity = ResponseEntity.builder()
-                    .message("Email already exists")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(null)
-                    .build();
-        } else {
-            responseEntity = ResponseEntity.builder()
-                    .message("Register successfully")
-                    .status(HttpStatus.OK)
-                    .data(response)
-                    .build();
-        }
-        return responseEntity;
+    public ResponseEntity<BaseResponse<RegisterRes>> register(@Valid @RequestBody RegisterReq registerUserDto) {
+        RegisterRes registeredUser = authenticationService.register(registerUserDto);
+        BaseResponse<RegisterRes> response = new BaseResponse<>(registeredUser.isStatus() ? "Success" : "Failed", registeredUser.isStatus() ? registeredUser : null);
+        return ResponseEntity
+                .status(registeredUser.isStatus() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
-    @GetMapping("/verify")
-    public ResponseEntity verifyAccount(@RequestParam String token) {
-        boolean isVerified = authenService.verifyAccount(token);
-        ResponseEntity responseEntity = null;
-        if (isVerified) {
-            responseEntity = ResponseEntity.builder()
-                    .message("Account verified")
-                    .status(HttpStatus.OK)
-                    .data(true)
-                    .build();
-        } else {
-            responseEntity = ResponseEntity.builder()
-                    .message("Invalid token")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(false)
-                    .build();
-        }
-        return responseEntity;
+    @PostMapping("/login")
+    public ResponseEntity<BaseResponse<LoginRes>> authenticate(@Valid @RequestBody LoginReq loginUserDto){
+        LoginRes authenticatedUser = authenticationService.login(loginUserDto);
+        BaseResponse<LoginRes> response = new BaseResponse<>(authenticatedUser.isStatus() ? "Success" : "Failed", authenticatedUser.isStatus() ? authenticatedUser : null);
+        return ResponseEntity
+                .status(authenticatedUser.isStatus() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
-    @PostMapping("/regenerate-otp")
-    public ResponseEntity regenerateOtp(@RequestParam String email) {
-        boolean isOtpRegenerated = authenService.regenerateOtp(email);
-        ResponseEntity responseEntity = null;
-        if (isOtpRegenerated) {
-            responseEntity = ResponseEntity.builder()
-                    .message("OTP regenerated")
-                    .status(HttpStatus.OK)
-                    .data(true)
-                    .build();
-        } else {
-            responseEntity = ResponseEntity.builder()
-                    .message("Invalid email")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(false)
-                    .build();
-        }
-        return responseEntity;
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyUser(@Valid @RequestBody VerifyReq verifyUserDto) {
+        authenticationService.verifyAccount(verifyUserDto);
+        return ResponseEntity.ok("Account verified successfully");
+
+    }
+
+    @PostMapping("/resend")
+    public ResponseEntity<?> resendVerificationCode(@Valid @RequestParam String email) {
+        authenticationService.regenerateOtp(email);
+        return ResponseEntity.ok("Verification code sent");
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity forgotPassword(@RequestParam String email) {
-        boolean isPasswordReset = authenService.forgotPassword(email);
-        ResponseEntity responseEntity = null;
-        if (isPasswordReset) {
-            responseEntity = ResponseEntity.builder()
-                    .message("Password reset")
-                    .status(HttpStatus.OK)
-                    .data(true)
-                    .build();
-        } else {
-            responseEntity = ResponseEntity.builder()
-                    .message("Invalid email")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .data(false)
-                    .build();
-        }
-        return responseEntity;
+        return null;
     }
 }

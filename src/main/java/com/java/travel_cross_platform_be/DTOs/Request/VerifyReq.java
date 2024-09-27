@@ -9,12 +9,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class LoginReq {
-
+public class VerifyReq {
     @Pattern(regexp = "^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$", message = "Invalid email format")
     @NotBlank(message = "Email is required")
     private String email;
-    @NotBlank(message = "Password is required")
-    private String password;
+    @NotBlank(message = "Verification code is required")
+    private String verificationCode;
 }

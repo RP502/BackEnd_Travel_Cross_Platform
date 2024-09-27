@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRes {
-    private String status;
+    private boolean status;
     private String message;
     private String email;
 }
