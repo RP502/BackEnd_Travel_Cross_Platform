@@ -1,6 +1,7 @@
-package com.java.javaspringboot_3.Controller;
+package com.java.travel_cross_platform_be.Controller;
 
 
+import com.java.travel_cross_platform_be.DTOs.BaseResponse;
 import com.java.travel_cross_platform_be.DTOs.DTO.UserDTO;
 import com.java.travel_cross_platform_be.Model.Entity.TravelUser;
 import com.java.travel_cross_platform_be.Service.Interface.UserService;
@@ -23,10 +24,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<TravelUser> authenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        TravelUser currentUser = (TravelUser) authentication.getPrincipal();
-        return ResponseEntity.ok(currentUser);
+    public ResponseEntity<BaseResponse<UserDTO>> authenticatedUser(@RequestParam Long id) {
+//        UserDTO
+        return ResponseEntity.ok(new BaseResponse<>(userDTO));
     }
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {

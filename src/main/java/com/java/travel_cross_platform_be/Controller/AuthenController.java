@@ -6,6 +6,7 @@ import com.java.travel_cross_platform_be.DTOs.Request.RegisterReq;
 import com.java.travel_cross_platform_be.DTOs.Request.VerifyReq;
 import com.java.travel_cross_platform_be.DTOs.Response.LoginRes;
 import com.java.travel_cross_platform_be.DTOs.Response.RegisterRes;
+import com.java.travel_cross_platform_be.DTOs.Response.VerifyRes;
 import com.java.travel_cross_platform_be.Service.Interface.AuthenService;
 import com.java.travel_cross_platform_be.Service.Jwt.JwtService;
 import jakarta.validation.Valid;
@@ -44,20 +45,29 @@ public class AuthenController {
 
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyUser(@Valid @RequestBody VerifyReq verifyUserDto) {
-        authenticationService.verifyAccount(verifyUserDto);
-        return ResponseEntity.ok("Account verified successfully");
-
+    public ResponseEntity<BaseResponse<VerifyRes>> verifyUser(@Valid @RequestBody VerifyReq verifyUserDto) {
+        VerifyRes verifyRes = authenticationService.verifyAccount(verifyUserDto);
+        BaseResponse<VerifyRes> response = new BaseResponse<>(verifyRes.isStatus() ? "Success" : "Failed", verifyRes.isStatus() ? verifyRes : null);
+        return ResponseEntity
+                .status(verifyRes.isStatus() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
     @PostMapping("/resend")
-    public ResponseEntity<?> resendVerificationCode(@Valid @RequestParam String email) {
+    public ResponseEntity<BaseResponse<Boolean>> resendVerificationCode(@Valid @RequestParam String email) {
         authenticationService.regenerateOtp(email);
-        return ResponseEntity.ok("Verification code sent");
+        BaseResponse<Boolean> response = new BaseResponse<>("New verification code was sent to your email !", true);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity forgotPassword(@RequestParam String email) {
-        return null;
+    public ResponseEntity<BaseResponse<Boolean>> forgotPassword(@RequestParam String email) {
+        authenticationService.forgotPassword(email);
+        BaseResponse<Boolean> response = new BaseResponse<>("New password was sent to your email !", true);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 }

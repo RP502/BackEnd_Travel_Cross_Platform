@@ -14,7 +14,7 @@ public class PasswordUtil {
     private static final String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static SecureRandom random = new SecureRandom();
 
-    public String generatePassword() {
+    public static String generatePassword() {
         StringBuilder sb = new StringBuilder(6);
         for (int i = 0; i < 6; i++) {
             int rndCharAt = random.nextInt(DATA_FOR_RANDOM_STRING.length());
